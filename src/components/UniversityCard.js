@@ -41,7 +41,7 @@ function UniversityCard() {
               <div class="card-body " >
                 <h5 class="card-title   "> {key.universityName} </h5>
                 <p class="card-text section-white font-monospace ">
-                {key.universityTypeId}
+                {key.universityType.universityTypeName}
                 </p>
                 <Link to={{pathname:'/university/' + key.id}}> <a class="btn btn-primary">Universite Hakkında &nbsp; </a></Link>
               

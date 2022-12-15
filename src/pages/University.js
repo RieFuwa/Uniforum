@@ -15,8 +15,8 @@ function University() {
   const [uniComment, setUniComment] = useState([]);
 
 
-  const getUniversityById = () => {
-    axios.get("/university/" + universityId).then(function (response) {
+  const getUniversityById = async () => {
+    await axios.get("/university/" + universityId).then(function (response) {
       console.log(response);
       return response.data
     }).then(
@@ -29,8 +29,8 @@ function University() {
       })
   }
 
-  const getUniversityComment = async() => {
-  await  axios.get("/comment/getAllUniversityComment?universityId=" + universityId).then(function (response) {
+  const getUniversityComment = async () => {
+    await axios.get("/comment/getAllUniversityComment?universityId=" + universityId).then(function (response) {
       console.log(response);
       return response.data
     }).then(
@@ -56,28 +56,25 @@ function University() {
   }, [])
 
 
-
-
-
   return (
 
     <div className='container-sm'>
       <div class="card ">
         <img src={universityById.universityPhotos}></img>
         <div class="card-header">
-          <h1>{universityById.universityName}</h1><span class="badge text-bg-success">UniversityType:{universityById.universityTypeId}</span>
+          <h1>{universityById.universityName}</h1><span class="badge text-bg-success">UniversityType </span>
           <Link to={"/"}><span class="badge text-bg-danger">Menüye dön</span></Link>
 
         </div>
       </div>
 
-   <CreatePost userId="638a26ce4558e44e8c57b19d" universityId={universityId} getUniversityComment={getUniversityComment}></CreatePost>
+      <CreatePost userId="638a26ce4558e44e8c57b19d" universityId={universityId} getUniversityComment={getUniversityComment}></CreatePost>
 
 
       <h2 className='mt-4 text-center'>YORUMLAR</h2>
 
       <div className='row'>
-        {error ? "error" : isLoaded ? uniComment.map((key , index) => (<Post key={index} id={key.id} userId={key.userId}
+        {error ? "error" : isLoaded ? uniComment.map((key, index) => (<Post key={index} id={key.id} userId={key.user.userName}
           universityId={key.universityId} connectedCommentId={key.connectedCommentId} commentText={key.commentText} createDate={key.createDate}></Post>)) : "Loading"}
       </div>
 
