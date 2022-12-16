@@ -74,8 +74,10 @@ function University() {
       <h2 className='mt-4 text-center'>YORUMLAR</h2>
 
       <div className='row'>
-        {error ? "error" : isLoaded ? uniComment.map((key, index) => (<Post key={index} id={key.id} userId={key.user.userName}
-          universityId={key.universityId} connectedCommentId={key.connectedCommentId} commentText={key.commentText} createDate={key.createDate}></Post>)) : "Loading"}
+        
+        {error ? "error" : isLoaded ? uniComment.map((key, index) => (<Post key={index} id={key.id} userId={key.user.id} userName={key.user.userName}
+          universityName={key.university.universityName} connectedCommentId={key.connectedCommentId} commentText={key.commentText} createDate={key.createDate} commentLikes={key.commentLikes} getUniversityComment={getUniversityComment}></Post>)) : "Loading"}
+      
       </div>
 
     </div>
