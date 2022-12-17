@@ -1,7 +1,30 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import axios from 'axios';
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 function SignIn() {
+    const [isSend, setIsSend] = useState(false);
+    let navigate = useNavigate()
+
+    const [user, setUser] = useState({
+        userMail: "",
+        userPassword: ""
+    })
+
+    const { userMail, userPassword } = user
+
+    const onInputChange = (e) => {
+        setUser({ ...user, [e.target.name]: e.target.value })
+        setIsSend(false)
+    }
+
+    const onSumbit = async (e) => {
+        e.preventDefault();
+        await axios.post("/userAuth/login", user)
+        setIsSend(true)
+        navigate("/")
+    }
+    
     return (
         <div className='container' >
             <div className="row ">
@@ -10,20 +33,20 @@ function SignIn() {
                     <h2 className="text-center font-monospace mt-2 ">
                         Giriş Yap
                     </h2>
-                    <form >
-                        
+                    <form onSubmit={(e) => onSumbit(e)} >
+
                         <div className="mb-3 font-monospace">
                             <label htmlFor="userMail" className="form-label">Mail:</label>
-                            <input type={"text"} className="form-control" placeholder="Mail" name="userMail" required></input>
+                            <input required type={"email"} id="mail" className="form-control" value={userMail} maxLength={50} onChange={(e) => onInputChange(e)} placeholder="Mail" name="userMail" ></input>
                         </div>
 
                         <div className="mb-4 font-monospace">
                             <label htmlFor="userPassword" className="form-label">Şifre:</label>
-                            <input type={"password"} className="form-control" placeholder="Şifre" name="userPassword" required></input>
+                            <input required type={"password"} id="pass" className="form-control" value={userPassword} maxLength={50} onChange={(e) => onInputChange(e)} placeholder="Şifre" name="userPassword" ></input>
                         </div>
 
-                        <button type="submit" class="btn btn-success">Giriş</button>
-                        <Link type="text" class="btn btn-danger mx-1" to="/">İptal</Link>
+                        <button type='sumbit' className="btn btn-success">Giriş</button>
+                        <Link to={"/"}><button className="btn btn-danger mx-1 " >İptal</button></Link>
                         <div className='mt-3'>
                             <p>
                                 Hesabınız yok mu ?  &nbsp;
