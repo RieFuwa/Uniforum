@@ -5,9 +5,9 @@ import axios from 'axios';
 import { Button } from 'bootstrap';
 
 function Post(props) {
-  const { id, userId, universityName, connectedCommentId, commentText, createDate, commentLikes,userName } = props
+  const { id, userId, universityName, connectedCommentId, commentText, createDate, commentLikes, userName } = props
   const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(commentLikes.lentgh);
+  const [likeCount, setLikeCount] = useState(commentLikes.length);
   const [likeId, setLikeId] = useState(null);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -19,61 +19,46 @@ function Post(props) {
     setIsLiked(!isLiked);
     if (!isLiked) {
       saveLike();
-  
       setLikeCount(likeCount + 1)
     }
     else {
-    await  deleteLike();
+      await deleteLike();
       setLikeCount(likeCount - 1)
     }
 
   }
 
-  const getOneComment = () => {
-    axios.get("/comment/"+ id).then(function (response) {
-        console.log(response);
-        return response.data
-    }).then(
-        (result) => {
-            setIsLoaded(true);
-            setComment(result);
-            console.log(result)
-        }, (error) => {
-            setIsLoaded(true);
-            setError(error);
-        })
-}
 
-
-  const saveLike =  () => {
-     axios.post("/like/add", {
+  const saveLike = () => {
+    axios.post("/like/add", {
       commentId: id,
       userId: userId,
     }).then(function (response) {
-      console.log(response)
+      setLikeId(response.data.id)
+
     }).catch(function (error) {
       console.log(error)
     })
   }
 
-  const deleteLike = async() => {
- await  axios.delete("/like/" + likeId, {
+  const deleteLike = async () => {
+    await axios.delete("/like/" + likeId, {
     }).catch(function (error) {
       console.log(error)
     })
-   
+
   }
 
   const checkLikes = () => {
     var likeControl = commentLikes.find((like => "" + like.userId === "638a26ce4558e44e8c57b19d"));
-    console.log(commentLikes)
+
     if (likeControl != null) {
       setLikeId(likeControl.id);
       setIsLiked(true);
     }
   }
 
- useEffect(() => { checkLikes() }, [])
+  useEffect(() => { checkLikes() }, [])
   return (
     <div class="col-sm-6 mt-4" >
       <div class="card">
@@ -83,34 +68,34 @@ function Post(props) {
           <p class="card-text">Yazdıgı yorum: {commentText} </p>
           <p class="card-text">Yazdıgı zaman:{createDate} </p>
           <div className=' clearfix justify-content-start '>
-              <a href="#" class="btn btn-primary  me-auto p-2">Yanıt ver</a>
-              {disabled ?
-                <a
+            <a href="#" class="btn btn-primary  me-auto p-2">Yanıt ver</a>
+            {disabled ?
+              <a
                 disabled
                 className='w-25 p-3 text-dark'
-                  style={{fontSize:"25px"}}
-                  
-                  onClick={handleLike}
-                  aria-label="add to favorites"
-                >
-                  <FaHeart style={isLiked ? { color: "red" } : null} />
-                  
-                </a>
-                :
-                <a   
+                style={{ fontSize: "25px" }}
+
+                onClick={handleLike}
+                aria-label="add to favorites"
+              >
+                <FaHeart style={isLiked ? { color: "red" } : null} />
+
+              </a>
+              :
+              <a
                 className='w-25 p-3 text-dark'
-                style={{fontSize:"25px"}}
-                  onClick={handleLike}
-                  aria-label="add to favorites"
-                >
-                  
-                  <FaHeart style={isLiked ? { color: "red" } : null} />    
-                </a>
-                
-              }
-              {likeCount}
-             
-        
+                style={{ fontSize: "25px" }}
+                onClick={handleLike}
+                aria-label="add to favorites"
+              >
+
+                <FaHeart style={isLiked ? { color: "red" } : null} />
+              </a>
+
+            }
+            {likeCount}
+
+
           </div>
 
         </div>
