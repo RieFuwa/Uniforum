@@ -19,7 +19,7 @@ function App() {
     </>
 
   return (
-    <div class="container-sm ">
+    <div className="container-sm ">
       <Router>
         <Routes>
           <Route element={<WithNavbar></WithNavbar>}>

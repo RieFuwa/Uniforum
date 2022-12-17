@@ -59,11 +59,11 @@ function University() {
   return (
 
     <div className='container-sm'>
-      <div class="card ">
+      <div className="card ">
         <img src={universityById.universityPhotos}></img>
-        <div class="card-header">
+        <div className="card-header">
           <h1>{universityById.universityName}</h1><span class="badge text-bg-success">UniversityType </span>
-          <Link to={"/"}><span class="badge text-bg-danger">Menüye dön</span></Link>
+          <Link to={"/"}><span className="badge text-bg-danger">Menüye dön</span></Link>
 
         </div>
       </div>
