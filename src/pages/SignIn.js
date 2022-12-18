@@ -5,12 +5,10 @@ import { Link, useNavigate } from 'react-router-dom'
 function SignIn() {
     const [isSend, setIsSend] = useState(false);
     let navigate = useNavigate()
-
     const [user, setUser] = useState({
         userMail: "",
         userPassword: ""
     })
-
     const { userMail, userPassword } = user
 
     const onInputChange = (e) => {
@@ -20,11 +18,17 @@ function SignIn() {
 
     const onSumbit = async (e) => {
         e.preventDefault();
-        await axios.post("/userAuth/login", user)
+        await axios.post("/userAuth/login", user).then(
+            function (response) {
+                localStorage.setItem("token", response.data.accessToken)
+                localStorage.setItem("signedUserId", response.data.userId)
+                localStorage.setItem("signedUserName", response.data.userName)
+            }
+        )
         setIsSend(true)
-        navigate("/")
+        navigate(-1)
     }
-    
+
     return (
         <div className='container' >
             <div className="row ">

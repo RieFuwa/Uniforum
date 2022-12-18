@@ -4,8 +4,8 @@ import { FaHeart } from "react-icons/fa";
 import axios from 'axios';
 import { Button } from 'bootstrap';
 
-function Post(props) {
-  const { id, userId, universityName, connectedCommentId, commentText, createDate, commentLikes, userName } = props
+function Comment(props) {
+  const { id, user, connectedCommentId, commentText, createDate, commentLikes } = props
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(commentLikes.length);
   const [likeId, setLikeId] = useState(null);
@@ -13,7 +13,8 @@ function Post(props) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [comment, setComment] = useState([]);
 
-  let disabled = "638a26ce4558e44e8c57b19d" == null ? true : false;
+  let disabled = localStorage.getItem("signedUserId") == null ? false : true;
+
 
   const handleLike = async () => {
     setIsLiked(!isLiked);
@@ -22,8 +23,8 @@ function Post(props) {
       setLikeCount(likeCount + 1)
     }
     else {
-      await deleteLike();
       setLikeCount(likeCount - 1)
+      await deleteLike();
     }
 
   }
@@ -32,7 +33,7 @@ function Post(props) {
   const saveLike = () => {
     axios.post("/like/add", {
       commentId: id,
-      userId: userId,
+      userId: localStorage.getItem("signedUserId"),
     }).then(function (response) {
       setLikeId(response.data.id)
 
@@ -50,8 +51,7 @@ function Post(props) {
   }
 
   const checkLikes = () => {
-    var likeControl = commentLikes.find((like => "" + like.userId === "638a26ce4558e44e8c57b19d"));
-
+    var likeControl = commentLikes.find((like => "" + like.userId === localStorage.getItem("signedUserId")));
     if (likeControl != null) {
       setLikeId(likeControl.id);
       setIsLiked(true);
@@ -60,39 +60,33 @@ function Post(props) {
 
   useEffect(() => { checkLikes() }, [])
   return (
-    <div class="col-sm-6 mt-4" >
+    <div class="col-sm mt-4" >
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Yorum Id'si: {id} <br></br> Yazanın adı : {userName} <br></br> Yazdığı Uni:{universityName} </h5>
-          <p class="card-text">Connected Comment Id{connectedCommentId} </p>
-          <p class="card-text">Yazdıgı yorum: {commentText} </p>
-          <p class="card-text">Yazdıgı zaman:{createDate} </p>
+          <h5 class="card-title">{/*Yorum Id'si: {id} */} {user.userName} </h5>
+          {/* <p class="card-text">Connected Comment Id{connectedCommentId} </p> */}
+          <p class="card-text">
+            {/* Yazdıgı yorum:  */}
+            {commentText}
+          </p>
+          <p class="card-text">
+            {/* Yazdıgı zaman: */}
+            {createDate} </p>
           <div className=' clearfix justify-content-start '>
             <a href="#" class="btn btn-primary  me-auto p-2">Yanıt ver</a>
-            {disabled ?
-              <a
-                disabled
-                className='w-25 p-3 text-dark'
-                style={{ fontSize: "25px" }}
 
-                onClick={handleLike}
-                aria-label="add to favorites"
-              >
-                <FaHeart style={isLiked ? { color: "red" } : null} />
+            <a
+              disabled
+              className='w-25 p-3 text-dark'
+              style={{ fontSize: "25px" }}
 
-              </a>
-              :
-              <a
-                className='w-25 p-3 text-dark'
-                style={{ fontSize: "25px" }}
-                onClick={handleLike}
-                aria-label="add to favorites"
-              >
+              onClick={disabled ? handleLike : null}
+              aria-label="add to favorites"
+            >
+              <FaHeart style={isLiked ? { color: "red" } : null} />
 
-                <FaHeart style={isLiked ? { color: "red" } : null} />
-              </a>
+            </a>
 
-            }
             {likeCount}
 
 
@@ -105,5 +99,5 @@ function Post(props) {
   )
 }
 
-export default Post
+export default Comment
 //<FaHeart className='mt-1 float-end' style={{fontSize:"25px"}}></FaHeart>

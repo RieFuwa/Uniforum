@@ -22,9 +22,14 @@ function Register() {
 
     const onSumbit = async (e) => {
         e.preventDefault();
-        await axios.post("/userAuth/register", user)
-        setIsSend(true)
-        navigate("/")
+        await axios.post("/userAuth/register", user).then(
+            function (response) {
+                if (response.data.message == "User successfully registered.") {
+                    setIsSend(true)
+                    navigate("/signin")
+                }
+            }
+        )
     }
 
     return (

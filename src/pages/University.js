@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { Link } from 'react-router-dom';
-import Post from '../components/Post';
+import Comment from '../components/Comment';
 import { Button } from 'bootstrap';
-import CreatePost from '../components/CreatePost';
+import CreateComment from '../components/CreateComment';
 
 function University() {
   const { universityId } = useParams();
@@ -14,6 +14,8 @@ function University() {
   const isInitialMount = useRef(true);
   const [universityById, setUniversityById] = useState([]);
   const [uniComment, setUniComment] = useState([]);
+
+
 
 
   const getUniversityById = async () => {
@@ -68,15 +70,19 @@ function University() {
           </div>
         </div>
 
-        <CreatePost userId="638a26ce4558e44e8c57b19d" universityId={universityId} getUniversityComment={getUniversityComment}></CreatePost>
+
+        {/* Yorum kismi giris yapmayanlar icin kapali
+          sonradan farkli bir arayuz gosterilebilir */}
+        {localStorage.getItem("signedUserId") != null ? <CreateComment userId={localStorage.getItem("signedUserId")} universityId={universityId} getUniversityComment={getUniversityComment}></CreateComment> : <></>}
+
 
 
         <h2 className='mt-4 text-center'>YORUMLAR</h2>
 
-        <div className='row'>
+        <div className='column'>
 
-          {error ? "error" : isLoadedComments ? uniComment.map((key, index) => (<Post key={index} id={key.id} userId={key.user.id} userName={key.user.userName}
-            universityName={key.university.universityName} connectedCommentId={key.connectedCommentId} commentText={key.commentText} createDate={key.createDate} commentLikes={key.commentLikes} getUniversityComment={getUniversityComment}></Post>)) : "Loading"}
+          {error ? "error" : isLoadedComments ? uniComment.map((key, index) => (<Comment key={index} id={key.id} user={key.user}
+            connectedCommentId={key.connectedCommentId} commentText={key.commentText} createDate={key.createDate} commentLikes={key.commentLikes} getUniversityComment={getUniversityComment}></Comment>)) : "Loading"}
 
         </div>
 
@@ -85,5 +91,3 @@ function University() {
 }
 
 export default University
-// {universityById.id}
-// {universityById.universityName}
