@@ -22,8 +22,8 @@ function Navbar() {
                     </Link>
                     {localStorage.getItem("signedUserId") == null ?
                         <Link to="/signin"> <button className="btn btn-success">Sign in</button> </Link> : <div>
-                            <button className="btn btn-success">Profile</button>
-                            <button className="btn btn-danger" onClick={onLogoutClicked}>Logout</button>
+                            <button className="btn btn-success m-1">Profile</button>
+                            <button className="btn btn-danger m-1" onClick={onLogoutClicked}>Logout</button>
                         </div>}
                 </div>
             </nav>

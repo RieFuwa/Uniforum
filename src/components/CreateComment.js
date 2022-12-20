@@ -43,13 +43,13 @@ function CreateComment(props) {
 
 
     return (
-        <div class="card text-center mt-3">
+        <div class="card text-center mt-3 border border-2 border-primary">
 
             <div class="card-header fs-5">
                 Üniversite hakkında yorum yap
             </div>
             <form>
-                <div class="card-body">
+                <div class="card-body ">
 
                     <input type={"text"} className="form-control mt-2" placeholder="Yorum" maxLength={200} value={commentText} name="commentText" onChange={(i) => handleComment(i.target.value)} required ></input>
 

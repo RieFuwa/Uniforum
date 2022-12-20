@@ -16,11 +16,8 @@ function University() {
   const [uniComment, setUniComment] = useState([]);
 
 
-
-
   const getUniversityById = async () => {
     await axios.get("/university/" + universityId).then(function (response) {
-
       return response.data
     }).then(
       (result) => {
@@ -60,29 +57,25 @@ function University() {
 
   if (isLoadedUniversity)
     return (
-      <div className='container-sm'>
-        <div className="card ">
+      <div className='container-sm  '>
+        <div className="card border ">
           <img src={universityById.universityPhotos}></img>
-          <div className="card-header">
+          <div className="card-header border border-2">
             <h1>{universityById.universityName}</h1><span class="badge text-bg-success">{universityById.universityType.universityTypeName}</span>
             <Link to={"/"}><span className="badge text-bg-danger">Menüye dön</span></Link>
-
           </div>
         </div>
-
 
         {/* Yorum kismi giris yapmayanlar icin kapali
           sonradan farkli bir arayuz gosterilebilir */}
         {localStorage.getItem("signedUserId") != null ? <CreateComment userId={localStorage.getItem("signedUserId")} universityId={universityId} getUniversityComment={getUniversityComment}></CreateComment> : <></>}
 
-
-
         <h2 className='mt-4 text-center'>YORUMLAR</h2>
 
         <div className='column'>
-
+      
           {error ? "error" : isLoadedComments ? uniComment.map((key, index) => (<Comment key={index} id={key.id} user={key.user}
-            connectedCommentId={key.connectedCommentId} commentText={key.commentText} createDate={key.createDate} commentLikes={key.commentLikes} getUniversityComment={getUniversityComment}></Comment>)) : "Loading"}
+            connectedCommentId={key.connectedCommentId} commentText={key.commentText} createDate={key.createDate} commentLikes={key.commentLikes} universityId={key.universityId} getUniversityComment={getUniversityComment}></Comment>)) : "Loading"}
 
         </div>
 
