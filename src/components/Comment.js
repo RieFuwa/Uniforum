@@ -8,6 +8,7 @@ import Card from 'react-bootstrap/Card';
 import RespondComment from './RespondComment';
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 import CreateRespondComment from './CreateRespondComment';
+import './comment.scss'
 
 
 function Comment(props) {
@@ -51,20 +52,6 @@ function Comment(props) {
 
   }
 
-  const getRespondComment = async () => {
-    await axios.get("/comment/commentAnswers?connectedCommentId=" + id).then(function (response) {
-      console.log(response);
-      return response.data
-    }).then(
-      (result) => {
-        setIsLoadedRespondComment(true);
-        setRespondCommentList(result);
-      }, (error) => {
-        setIsLoadedRespondComment(true);
-        setError(error);
-      })
-  }
-
   const saveLike = () => {
     axios.post("/like/add", {
       commentId: id,
@@ -93,8 +80,33 @@ function Comment(props) {
   }
 
   const handleSubmit = async () => {
-
     await getRespondComment();
+  }
+
+  const getRespondComment = async () => {
+    await axios.get("/comment/commentAnswers?connectedCommentId=" + id).then(function (response) {
+      console.log(response);
+      return response.data
+    }).then(
+      (result) => {
+        setIsLoadedRespondComment(true);
+        setRespondCommentList(result);
+      }, (error) => {
+        setIsLoadedRespondComment(true);
+        setError(error);
+      })
+  }
+
+  const formatDate = (strDate) => {
+    var date = new Date(strDate)
+    var options = { year: 'numeric', month: 'long', day: 'numeric' };
+    var formattedDate = date.toLocaleDateString("en-US", options)
+    return formattedDate;
+  }
+
+  const capitalizeFirstLetter = (str) => {
+    console.log(str)
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
 
@@ -103,71 +115,56 @@ function Comment(props) {
   }, [])
 
   if (connectedCommentId === null) {
-
     return (
-      <div class="col-sm mt-4 " >
-        <div>
-        </div>
-        <div class="card border border-2 border-success">
+      <Accordion defaultActiveKey="1">
+        <Card className='mt-3 border border-1 ' style={{ backgroundColor: "White" }}>
           <div class="card-body">
-            <div class="clearfix col-1 text-center  ">
-
-              <Link to={{ pathname: '/user/' + user.id }}>
-                <button type="button" class="btn btn-danger btn-lg rounded-circle fs-4">
-                  {user.userName.charAt(0).toUpperCase()}
-                </button>
-
-              </Link>
-
-              <h5 class="card-title fs-5 fw-bold">{/*Yorum Id'si: {id} */} {user.userName} </h5>
+            <div class="row">
+              <div class="col-auto">
+                <Link to={{ pathname: '/user/' + user.id }}>
+                  <button type="button" class="btn userbttn btn-lg">
+                    {user.userName.charAt(0).toUpperCase()}
+                  </button>
+                </Link>
+              </div>
+              <div class="col p-0">
+                <h5 >{capitalizeFirstLetter(user.userName)}
+                  <p class="dateText">
+                    {formatDate(createDate)} </p>
+                </h5>
+              </div>
             </div>
 
-
-            {/* <p class="card-text">Connected Comment Id{connectedCommentId} </p> */}
             <p class="card-text fs-5">
-              {/* Yazdıgı yorum:  */}
               {commentText}
             </p>
-            <p class="card-text">
-              {/* Yazdıgı zaman: */}
-              {createDate} </p>
-            <div className=' clearfix justify-content-start '>
 
-              <button href="#" class="btn btn-success   m-1 fs-6">Yanıt ver</button>
+            <CustomToggle eventKey="0">Tüm Yanıtlar</CustomToggle>
+            <div className=' clearfix justify-content-start '>
               <a
                 disabled
-                className=' p-2 text-dark'
+                className=' p-1 text-dark'
                 style={{ fontSize: "25px" }}
-
                 onClick={disabled ? handleLike : null}
                 aria-label="add to favorites"
               >
                 <FaHeart style={isLiked ? { color: "red" } : null} />
               </a>
-
               {likeCount}
-              <Accordion defaultActiveKey="1" >
-                <Card className='mt-2 border border-1 border-success' style={{ backgroundColor: "transparent" }}>
-                  <Card.Header >
-                    <CustomToggle eventKey="0">Tüm Yanıtlar</CustomToggle>
-                  </Card.Header>
-                  <Accordion.Collapse eventKey="0">
 
-                    <Card.Body>
-                      {localStorage.getItem("signedUserId") != null ? <CreateRespondComment userId={localStorage.getItem("signedUserId")} connectedCommentId={id} universityId={universityId} getRespondComment={getRespondComment}></CreateRespondComment> : <></>}
+              <Accordion.Collapse eventKey="0">
+                <Card.Body>
+                  {localStorage.getItem("signedUserId") != null ? <CreateRespondComment userId={localStorage.getItem("signedUserId")} connectedCommentId={id} universityId={universityId} getRespondComment={getRespondComment}></CreateRespondComment> : <></>}
 
-                      {error ? "error" : isLoadedRespondComment ? respondCommentList.map((key, index) => (<RespondComment key={index} id={key.id} user={key.user}
-                        commentText={key.commentText} createDate={key.createDate} commentLikes={key.commentLikes}></RespondComment>)) : "Loading"}
-
-                    </Card.Body>
-
-                  </Accordion.Collapse>
-                </Card>
-              </Accordion>
+                  {error ? "error" : isLoadedRespondComment ? respondCommentList.map((key, index) => (<RespondComment key={index} id={key.id} user={key.user}
+                    commentText={key.commentText} createDate={formatDate(key.createDate)} commentLikes={key.commentLikes}></RespondComment>)) : "Loading"}
+                </Card.Body>
+              </Accordion.Collapse>
             </div>
           </div>
-        </div>
-      </div>
+        </Card>
+      </Accordion>
+
 
     )
   }
