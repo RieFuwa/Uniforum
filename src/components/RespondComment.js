@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaHeart } from "react-icons/fa";
 import axios from 'axios';
+import Card from 'react-bootstrap/Card';
 
 function RespondComment(props) {
 
@@ -10,6 +11,7 @@ function RespondComment(props) {
   const [likeCount, setLikeCount] = useState(commentLikes.length);
   const [likeId, setLikeId] = useState(null);
   const [error, setError] = useState(null);
+  
   let disabled = localStorage.getItem("signedUserId") == null ? false : true;
 
 
@@ -55,50 +57,52 @@ function RespondComment(props) {
     checkLikes()
   }, [])
   return (
-    <div class=" mt-4 " >
-      <div class="card border border-1 border-success">
-        <div class="card-body ">
-          <div class="clearfix col-1 text-center  ">
+    
+          <div class="card-body">
+            <div class="row">
+              <div class="col-auto">
+                <Link to={{ pathname: '/user/' + user.id }}>
+                  <button type="button" class="btn userbttn btn-lg">
+                    {user.userName.charAt(0).toUpperCase()}
+                  </button>
+                </Link>
+              </div>
+              <div class="col p-0">
+                <h5 >{user.userName}
+                  <p class="dateText">
+                    {createDate} </p>
+                </h5>
+              </div>
+            </div>
+
+            <p class="card-text fs-5">
+              {commentText}
+            </p>
+
             
-             <Link to={{ pathname: '/user/' + user.id }}>
-              
-                <button type="button" class="btn btn-danger btn-sm rounded-circle fs-5">
-                  {user.userName.charAt(0).toUpperCase()}
-                </button>
+            <div className=' clearfix justify-content-start '>
+              <a
+                disabled
+                className=' p-1 text-dark'
+                style={{ fontSize: "25px" }}
+                onClick={disabled ? handleLike : null}
+                aria-label="add to favorites"
+              >
+                <FaHeart style={isLiked ? { color: "red" } : null} />
+              </a>
+              &nbsp;&nbsp;
+              {likeCount}
 
-              </Link>
-
-              <p class="card-title  fw-bold">{/*Yorum Id'si: {id} */} {user.userName} </p>
+            
+            </div>
           </div>
-      
-          {/* <h3>yorum idsi: {id} </h3> */}
-          {/* <h4>conntenctedcomment id : {connectedCommentId} </h4> */}
-          {/* <p class="card-text">Connected Comment Id{connectedCommentId} </p> */}
-          <p class="card-text">
-            {/* Yazdıgı yorum:  */}
-            {commentText}
-          </p>
-          <p class="card-text">
-            {/* Yazdıgı zaman: */}
-            {createDate} </p>
-          <div className=' clearfix justify-content-start '>
-            <a
-              disabled
-              className=' text-dark'
-              style={{ fontSize: "25px" }}
-
-              onClick={disabled ? handleLike : null}
-              aria-label="add to favorites"
-            >
-              <FaHeart style={isLiked ? { color: "red" } : null} />
-            </a>
-            &nbsp;&nbsp;
-            {likeCount}
-          </div>
-        </div>
-      </div>
-    </div>
+       
   )
 }
 
 export default RespondComment
+
+
+
+
+
