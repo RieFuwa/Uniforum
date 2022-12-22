@@ -1,6 +1,6 @@
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useState } from 'react'
+
 
 function CreateComment(props) {
     const { userId, universityId, getUniversityComment } = props;

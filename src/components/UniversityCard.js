@@ -10,17 +10,16 @@ function UniversityCard() {
 
   const getUniversity = () => {
     axios.get("/university/getAll").then(function (response) {
-        console.log(response);
-        return response.data
+      return response.data
     }).then(
-        (result) => {
-            setIsLoaded(true);
-            setUniversity(result);
-        }, (error) => {
-            setIsLoaded(true);
-            setError(error);
-        })
-}
+      (result) => {
+        setIsLoaded(true);
+        setUniversity(result);
+      }, (error) => {
+        setIsLoaded(true);
+        setError(error);
+      })
+  }
 
   useEffect(() => {
     getUniversity();
@@ -33,18 +32,18 @@ function UniversityCard() {
   } else {
     return (
       <div className="row justify-content-center " >
-        {university.map((key,index) => (
-          <div className="col-md-3 mt-4 "key={index}>
+        {university.map((key, index) => (
+          <div className="col-md-3 mt-4 " key={index}>
             <div className="row row-cols-md-6 " ></div>
             <div className="card foto shadow " >
-              <Link to={{pathname:'/university/' + key.id}}><img src={key.universityPhotos} className="card-img " /></Link>
+              <Link to={{ pathname: '/university/' + key.id }}><img src={key.universityPhotos} className="card-img " /></Link>
               <div className="card-body " >
                 <h5 className="card-title   "> {key.universityName} </h5>
                 <p className="card-text section-white font-monospace ">
-                {key.universityType.universityTypeName}
+                  {key.universityType.universityTypeName}
                 </p>
-                <Link to={{pathname:'/university/' + key.id}}> <a className="btn btn-primary">Universite Hakkında &nbsp; </a></Link>
-              
+                {/* <Link to={{ pathname: '/university/' + key.id }}> <a className="btn btn-primary">Universite Hakkında &nbsp; </a></Link> */}
+
               </div>
             </div>
           </div>))}

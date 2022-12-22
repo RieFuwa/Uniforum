@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import { Link } from 'react-router-dom';
 import Comment from '../components/Comment';
-import { Button } from 'bootstrap';
 import CreateComment from '../components/CreateComment';
 
 function University() {
@@ -62,7 +60,6 @@ function University() {
           <img src={universityById.universityPhotos}></img>
           <div className="card-header border border-2">
             <h1>{universityById.universityName}</h1><span class="badge text-bg-success">{universityById.universityType.universityTypeName}</span>
-            <Link to={"/"}><span className="badge text-bg-danger">Menüye dön</span></Link>
           </div>
         </div>
 
@@ -73,7 +70,7 @@ function University() {
         <h2 className='mt-4 text-center'>YORUMLAR</h2>
 
         <div className='column'>
-      
+
           {error ? "error" : isLoadedComments ? uniComment.map((key, index) => (<Comment key={index} id={key.id} user={key.user}
             connectedCommentId={key.connectedCommentId} commentText={key.commentText} createDate={key.createDate} commentLikes={key.commentLikes} universityId={key.universityId} getUniversityComment={getUniversityComment}></Comment>)) : "Loading"}
 

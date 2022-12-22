@@ -1,0 +1,44 @@
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+.userbttn {
+    color: white;
+    background-color: $orange;
+    border-radius: 100%;
+
+}
+
+.userbttn:hover {
+    background-color: orange;
+    color: white;
+}
+
+.btn-lg {
+    padding: 10px 20px;
+    font-size: 20px;
+    border-radius: 100px;
+}
+
+.dateText {
+    font-size: 15px;
+}
+
+.userPhoto {
+    background-color: $orange;
+    margin: 20px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    font-size: 60px;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    display: flex;
+}
+
+.userInfoCol {
+    text-align: center;
+}
+
+.userName {
+    font-size: 30px;
+}

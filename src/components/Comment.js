@@ -2,13 +2,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaHeart } from "react-icons/fa";
 import axios from 'axios';
-import { Button } from 'bootstrap';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import RespondComment from './RespondComment';
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 import CreateRespondComment from './CreateRespondComment';
-import './comment.scss'
+import '../scss/style.scss'
 
 
 function Comment(props) {
@@ -35,21 +34,23 @@ function Comment(props) {
   const [error, setError] = useState(null);
   const [respondCommentList, setRespondCommentList] = useState([]);
   const [isLoadedRespondComment, setIsLoadedRespondComment] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   let disabled = localStorage.getItem("signedUserId") == null ? false : true;
 
 
-  const handleLike = async () => {
-    setIsLiked(!isLiked);
-    if (!isLiked) {
-      saveLike();
-      setLikeCount(likeCount + 1)
-    }
-    else {
-      setLikeCount(likeCount - 1)
-      await deleteLike();
-    }
-
+  const getRespondComment = async () => {
+    await axios.get("/comment/commentAnswers?connectedCommentId=" + id).then(function (response) {
+      console.log(response);
+      return response.data
+    }).then(
+      (result) => {
+        setIsLoadedRespondComment(true);
+        setRespondCommentList(result);
+      }, (error) => {
+        setIsLoadedRespondComment(true);
+        setError(error);
+      })
   }
 
   const saveLike = () => {
@@ -69,6 +70,30 @@ function Comment(props) {
     }).catch(function (error) {
       console.log(error)
     })
+
+  }
+
+  const deleteComment = async () => {
+    await axios.delete("/comment/" + id, {
+    }).then(function (response) {
+      setIsDeleted(true)
+    }).catch(function (error) {
+      console.log(error)
+    })
+
+  }
+
+  const handleLike = async () => {
+    setIsLiked(!isLiked);
+    if (!isLiked) {
+      saveLike();
+      setLikeCount(likeCount + 1)
+    }
+    else {
+      setLikeCount(likeCount - 1)
+      await deleteLike();
+    }
+
   }
 
   const checkLikes = () => {
@@ -83,19 +108,6 @@ function Comment(props) {
     await getRespondComment();
   }
 
-  const getRespondComment = async () => {
-    await axios.get("/comment/commentAnswers?connectedCommentId=" + id).then(function (response) {
-      console.log(response);
-      return response.data
-    }).then(
-      (result) => {
-        setIsLoadedRespondComment(true);
-        setRespondCommentList(result);
-      }, (error) => {
-        setIsLoadedRespondComment(true);
-        setError(error);
-      })
-  }
 
   const formatDate = (strDate) => {
     var date = new Date(strDate)
@@ -114,10 +126,11 @@ function Comment(props) {
     checkLikes()
   }, [])
 
-  if (connectedCommentId === null) {
+  if (connectedCommentId === null && !isDeleted) {
     return (
       <Accordion defaultActiveKey="1">
         <Card className='mt-3 border border-1 ' style={{ backgroundColor: "White" }}>
+
           <div class="card-body">
             <div class="row">
               <div class="col-auto">
@@ -127,19 +140,28 @@ function Comment(props) {
                   </button>
                 </Link>
               </div>
-              <div class="col p-0">
+              <div class="col p-0 d-flex ">
                 <h5 >{capitalizeFirstLetter(user.userName)}
-                  <p class="dateText">
-                    {formatDate(createDate)} </p>
+                  <p class="dateText">{formatDate(createDate)} </p>
                 </h5>
               </div>
+              {
+                user.id == localStorage.getItem('signedUserId') ?
+                  <div class="col-auto">
+                    <button type='button' class='btn btn-danger' onClick={deleteComment}>Delete</button>
+                  </div> :
+                  null
+              }
             </div>
 
             <p class="card-text fs-5">
               {commentText}
             </p>
 
-            <CustomToggle eventKey="0">Tüm Yanıtlar</CustomToggle>
+            <CustomToggle eventKey="0">
+              Tüm Yanıtlar
+            </CustomToggle>
+
             <div className=' clearfix justify-content-start '>
               <a
                 disabled
@@ -154,8 +176,8 @@ function Comment(props) {
 
               <Accordion.Collapse eventKey="0">
                 <Card.Body>
-                  {localStorage.getItem("signedUserId") != null ? <CreateRespondComment userId={localStorage.getItem("signedUserId")} connectedCommentId={id} universityId={universityId} getRespondComment={getRespondComment}></CreateRespondComment> : <></>}
-
+                  {localStorage.getItem("signedUserId") != null ? <CreateRespondComment userId={localStorage.getItem("signedUserId")} connectedCommentId={id} universityId={universityId}
+                    getRespondComment={getRespondComment}></CreateRespondComment> : <></>}
                   {error ? "error" : isLoadedRespondComment ? respondCommentList.map((key, index) => (<RespondComment key={index} id={key.id} user={key.user}
                     commentText={key.commentText} createDate={formatDate(key.createDate)} commentLikes={key.commentLikes}></RespondComment>)) : "Loading"}
                 </Card.Body>
