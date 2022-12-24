@@ -1,7 +1,7 @@
 ## What the app looks like
 ![1](https://user-images.githubusercontent.com/71210936/209434956-e7e233e4-44df-4136-bf9f-c94ec36c9ef8.jpg)
 ## University page
-[2](https://user-images.githubusercontent.com/71210936/209434977-4a94ea6a-842f-4d3e-80ff-f21d19c84e7d.jpg)
+![2](https://user-images.githubusercontent.com/71210936/209434977-4a94ea6a-842f-4d3e-80ff-f21d19c84e7d.jpg)
 ## Add Comment 
 ![3](https://user-images.githubusercontent.com/71210936/209435023-184a9aea-bf13-4872-bc97-8e5db9dc3e06.jpg)
 ## User Page
