@@ -1,4 +1,4 @@
-## With : https://github.com/RieFuwa?tab=following
+## With : https://github.com/Prymethron
 ## What the app looks like
 ![1](https://user-images.githubusercontent.com/71210936/209434956-e7e233e4-44df-4136-bf9f-c94ec36c9ef8.jpg)
 ## University page
