@@ -3,15 +3,16 @@ import { Link } from 'react-router-dom'
 import { FaHeart } from "react-icons/fa";
 import axios from 'axios';
 import Card from 'react-bootstrap/Card';
+import { DeleteWithAuth, PostWithAuth } from '../services/HttpService';
 
 function RespondComment(props) {
 
-  const { id, user, commentText, createDate,commentLikes } = props
+  const { id, user, commentText, createDate, commentLikes } = props
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(commentLikes.length);
   const [likeId, setLikeId] = useState(null);
   const [error, setError] = useState(null);
-  
+
   let disabled = localStorage.getItem("signedUserId") == null ? false : true;
 
 
@@ -27,7 +28,7 @@ function RespondComment(props) {
     }
   }
   const saveLike = () => {
-    axios.post("/like/add", {
+    PostWithAuth("/like/add", {
       commentId: id,
       userId: localStorage.getItem("signedUserId"),
     }).then(function (response) {
@@ -39,7 +40,7 @@ function RespondComment(props) {
   }
 
   const deleteLike = async () => {
-    await axios.delete("/like/" + likeId, {
+    await DeleteWithAuth("/like/" + likeId, {
     }).catch(function (error) {
       console.log(error)
     })
@@ -57,46 +58,46 @@ function RespondComment(props) {
     checkLikes()
   }, [])
   return (
-    
-          <div class="card-body">
-            <div class="row">
-              <div class="col-auto">
-                <Link to={{ pathname: '/user/' + user.id }}>
-                  <button type="button" class="btn userbttn btn-lg">
-                    {user.userName.charAt(0).toUpperCase()}
-                  </button>
-                </Link>
-              </div>
-              <div class="col p-0">
-                <h5 >{user.userName}
-                  <p class="dateText">
-                    {createDate} </p>
-                </h5>
-              </div>
-            </div>
 
-            <p class="card-text fs-5">
-              {commentText}
-            </p>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-auto">
+          <Link to={{ pathname: '/user/' + user.id }}>
+            <button type="button" class="btn userbttn btn-lg">
+              {user.userName.charAt(0).toUpperCase()}
+            </button>
+          </Link>
+        </div>
+        <div class="col p-0">
+          <h5 >{user.userName}
+            <p class="dateText">
+              {createDate} </p>
+          </h5>
+        </div>
+      </div>
 
-            
-            <div className=' clearfix justify-content-start '>
-              <a
-                disabled
-                className=' p-1 text-dark'
-                style={{ fontSize: "25px" }}
-                onClick={disabled ? handleLike : null}
-                aria-label="add to favorites"
-              >
-                <FaHeart style={isLiked ? { color: "red" } : null} />
-              </a>
-              &nbsp;&nbsp;
-              {likeCount}
+      <p class="card-text fs-5">
+        {commentText}
+      </p>
 
-            
-            </div>
-          </div>
-       
+
+      <div className=' clearfix justify-content-start '>
+        <a
+          disabled
+          className=' p-1 text-dark'
+          style={{ fontSize: "25px" }}
+          onClick={disabled ? handleLike : null}
+          aria-label="add to favorites"
+        >
+          <FaHeart style={isLiked ? { color: "red" } : null} />
+        </a>
+        &nbsp;&nbsp;
+        {likeCount}
+
+
+      </div>
+    </div>
+
   )
 }
 

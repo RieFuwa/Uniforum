@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react'
+import { PostWithAuth } from '../services/HttpService';
 
 
 function CreateComment(props) {
@@ -9,7 +10,7 @@ function CreateComment(props) {
 
 
     const saveComment = async () => {
-        await axios.post("/comment/add", {
+        await PostWithAuth("/comment/add", {
             userId: userId,
             universityId: universityId,
             commentText: commentText

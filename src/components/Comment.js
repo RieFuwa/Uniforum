@@ -8,6 +8,7 @@ import RespondComment from './RespondComment';
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 import CreateRespondComment from './CreateRespondComment';
 import '../scss/style.scss'
+import { DeleteWithAuth, PostWithAuth } from '../services/HttpService';
 
 
 function Comment(props) {
@@ -53,8 +54,8 @@ function Comment(props) {
       })
   }
 
-  const saveLike = () => {
-    axios.post("/like/add", {
+  const saveLike = async () => {
+    await PostWithAuth("/like/add", {
       commentId: id,
       userId: localStorage.getItem("signedUserId"),
     }).then(function (response) {
@@ -66,7 +67,7 @@ function Comment(props) {
   }
 
   const deleteLike = async () => {
-    await axios.delete("/like/" + likeId, {
+    await DeleteWithAuth("/like/" + likeId, {
     }).catch(function (error) {
       console.log(error)
     })
@@ -74,7 +75,7 @@ function Comment(props) {
   }
 
   const deleteComment = async () => {
-    await axios.delete("/comment/" + id, {
+    await DeleteWithAuth("/comment/" + id, {
     }).then(function (response) {
       setIsDeleted(true)
     }).catch(function (error) {
