@@ -16,7 +16,7 @@ function User() {
 
   const getUserById = () => {
     axios.get("/user/" + userId).then(function (response) {
-
+      console.log('changes')
       return response.data
     }).then(
       (result) => {
@@ -30,7 +30,7 @@ function User() {
 
   const getUserComments = () => {
     axios.get("/comment/getAllUserComment?userId=" + userId).then(function (response) {
-      console.log(response)
+
       return response.data
     }).then(
       (result) => {
@@ -47,7 +47,7 @@ function User() {
   useEffect(() => {
     getUserById()
     getUserComments()
-  }, [])
+  }, [userId])
 
   return (
     <div class='container'>

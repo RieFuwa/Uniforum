@@ -43,7 +43,6 @@ function Comment(props) {
 
   const getRespondComment = async () => {
     await axios.get("/comment/commentAnswers?connectedCommentId=" + id).then(function (response) {
-      console.log(response);
       return response.data
     }).then(
       (result) => {

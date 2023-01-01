@@ -16,7 +16,7 @@ function CreateRespondComment(props) {
       universityId: universityId,
       commentText: respondCommentText
     }).then(function (response) {
-      console.log(response)
+
     }).catch(function (error) {
       console.log(error)
     })
@@ -29,7 +29,7 @@ function CreateRespondComment(props) {
       setRespondCommentText("");
       getRespondComment();
     } else {
-      console.log("bos")
+
     }
 
   }

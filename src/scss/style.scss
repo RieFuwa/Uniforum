@@ -4,6 +4,8 @@
     color: white;
     background-color: $orange;
     border-radius: 100%;
+    aspect-ratio: 1/1;
+    width: 50px;
 
 }
 
@@ -13,7 +15,7 @@
 }
 
 .btn-lg {
-    padding: 10px 20px;
+    padding: auto;
     font-size: 20px;
     border-radius: 100px;
 }
