@@ -35,7 +35,6 @@ function App() {
             <Route exact path="/" element={<Home></Home>}> </Route>
             <Route exact path="/university/:universityId" element={<University></University>}></Route>
             <Route exact path="/user/:userId" element={<User></User>}></Route>
-            <Route exact path={'/profile/:userId'} element={<User></User>}></Route>
           </Route>
           <Route exact path="/signin" element={decidePath(<SignIn />)} ></Route>
           <Route exact path="/register" element={decidePath(<Register></Register>)}></Route>
