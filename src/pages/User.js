@@ -4,6 +4,7 @@ import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Comment from '../components/Comment'
 import '../scss/style.scss'
+import { capitalizeFirstLetter } from '../helpers/StringFomatter';
 
 function User() {
   const { userId } = useParams();
@@ -41,10 +42,7 @@ function User() {
       })
   }
 
-  const capitalizeFirstLetter = (str) => {
-    console.log(str)
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
+
 
   useEffect(() => {
     getUserById()

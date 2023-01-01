@@ -9,6 +9,7 @@ import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 import CreateRespondComment from './CreateRespondComment';
 import '../scss/style.scss'
 import { DeleteWithAuth, PostWithAuth } from '../services/HttpService';
+import { capitalizeFirstLetter, formatDate } from '../helpers/StringFomatter';
 
 
 function Comment(props) {
@@ -110,17 +111,7 @@ function Comment(props) {
   }
 
 
-  const formatDate = (strDate) => {
-    var date = new Date(strDate)
-    var options = { year: 'numeric', month: 'long', day: 'numeric' };
-    var formattedDate = date.toLocaleDateString("en-US", options)
-    return formattedDate;
-  }
 
-  const capitalizeFirstLetter = (str) => {
-    console.log(str)
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
 
 
   useEffect(() => {
